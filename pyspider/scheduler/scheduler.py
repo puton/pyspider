@@ -51,6 +51,7 @@ class Project(object):
     @property
     def paused(self):
         pass
+
     def update(self, project_info):
         self.project_info = project_info
 
