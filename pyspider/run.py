@@ -21,7 +21,6 @@ from pyspider.message_queue import connect_message_queue
 from pyspider.database import connect_database
 from pyspider.libs import utils
 
-
 def read_config(ctx, param, value):
     if not value:
         return {}
@@ -403,11 +402,19 @@ def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
     _quit = []
     phantomjs_fetcher = os.path.join(
         os.path.dirname(pyspider.__file__), 'fetcher/phantomjs_fetcher.js')
+    list_arges = []
+    list_arges.append(args.encode('utf-8'))
+#     cmd = [phantomjs_path,
+#            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
+#            #'--load-images=false',
+#            '--ssl-protocol=any',
+#            '--disk-cache=true'] + list(args or []) + [phantomjs_fetcher, str(port)]
+           
     cmd = [phantomjs_path,
            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
            #'--load-images=false',
            '--ssl-protocol=any',
-           '--disk-cache=true'] + list(args or []) + [phantomjs_fetcher, str(port)]
+           '--disk-cache=true'] + list_arges + [phantomjs_fetcher, str(port)]
 
     try:
         _phantomjs = subprocess.Popen(cmd)
