@@ -404,7 +404,7 @@ def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
         os.path.dirname(pyspider.__file__), 'fetcher/phantomjs_fetcher.js')
     list_arges = []
     list_arges.append(args.encode('utf-8'))
-#     cmd = [phantomjs_path,
+#    cmd = [phantomjs_path,
 #            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
 #            #'--load-images=false',
 #            '--ssl-protocol=any',
