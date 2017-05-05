@@ -15,4 +15,7 @@
     "password": "111111",
     "need-auth": false
   }
+  	"phantomjs": {
+    	"args":"--max-disk-cache-size=1048576"
+  	}
 }

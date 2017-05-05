@@ -403,7 +403,8 @@ def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
     phantomjs_fetcher = os.path.join(
         os.path.dirname(pyspider.__file__), 'fetcher/phantomjs_fetcher.js')
     list_arges = []
-    list_arges.append(args.encode('utf-8'))
+    if args != None:
+        list_arges.append(args.encode('utf-8'))
 #    cmd = [phantomjs_path,
 #            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
 #            #'--load-images=false',
@@ -419,7 +420,7 @@ def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
     try:
         _phantomjs = subprocess.Popen(cmd)
     except OSError:
-        logging.warning('phantomjs not found, continue running without it.')
+        logging.warning('phantomjs not found, continue running without it.'+cmd)
         return None
 
     def quit(*args, **kwargs):
