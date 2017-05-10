@@ -387,7 +387,7 @@ def webui(ctx, host, port, cdn, scheduler_rpc, fetcher_rpc, max_rate, max_burst,
 
 @cli.command()
 @click.option('--phantomjs-path', default='phantomjs', help='phantomjs path')
-@click.option('--ports', default=25555, help='phantomjs port pool')
+@click.option('--ports', default="25555", help='phantomjs port pool')
 @click.option('--auto-restart', default=False, help='auto restart phantomjs if crashed')
 @click.argument('args', nargs=-1)
 @click.pass_context
@@ -403,7 +403,7 @@ def phantomjs(ctx, phantomjs_path, ports, auto_restart, args):
     phantomjs_fetcher = os.path.join(
         os.path.dirname(pyspider.__file__), 'fetcher/phantomjs_fetcher.js')
     list_arges = []
-    if args is not None:
+    if len(args) != 0:
         list_arges.append(args.encode('utf-8'))
 #    cmd = [phantomjs_path,
 #            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903

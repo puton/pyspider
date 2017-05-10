@@ -2,7 +2,7 @@
     "projectdb":"sqlalchemy+oracle+projectdb://SCOTT:gb666666@localhost/projectdb",
 	"resultdb":"sqlalchemy+oracle+resultdb://SCOTT:gb666666@localhost/resultdb",
 	"taskdb":"sqlalchemy+oracle+taskdb://SCOTT:gb666666@localhost/taskdb",
-	"phantomjs": {
-    	"ports":"25554,25555,25556"
-  	}
+"phantomjs": {
+	"ports":"25554,25555,25556"
+}
 }
