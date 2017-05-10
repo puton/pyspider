@@ -387,61 +387,72 @@ def webui(ctx, host, port, cdn, scheduler_rpc, fetcher_rpc, max_rate, max_burst,
 
 @cli.command()
 @click.option('--phantomjs-path', default='phantomjs', help='phantomjs path')
-@click.option('--port', default=25555, help='phantomjs port')
+@click.option('--ports', default=25555, help='phantomjs port pool')
 @click.option('--auto-restart', default=False, help='auto restart phantomjs if crashed')
 @click.argument('args', nargs=-1)
 @click.pass_context
-def phantomjs(ctx, phantomjs_path, port, auto_restart, args):
+def phantomjs(ctx, phantomjs_path, ports, auto_restart, args):
     """
     Run phantomjs fetcher if phantomjs is installed.
     """
     args = args or ctx.default_map and ctx.default_map.get('args', [])
-
+    ports = ports.split(',')
     import subprocess
     g = ctx.obj
     _quit = []
     phantomjs_fetcher = os.path.join(
         os.path.dirname(pyspider.__file__), 'fetcher/phantomjs_fetcher.js')
     list_arges = []
-    if len(args) != 0:
+    if args is not None:
         list_arges.append(args.encode('utf-8'))
 #    cmd = [phantomjs_path,
 #            # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
 #            #'--load-images=false',
 #            '--ssl-protocol=any',
 #            '--disk-cache=true'] + list(args or []) + [phantomjs_fetcher, str(port)]
-           
-    cmd = [phantomjs_path,
-           # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
-           #'--load-images=false',
-           '--ssl-protocol=any',
-           '--disk-cache=true'] + list_arges + [phantomjs_fetcher, str(port)]
-
-    try:
-        _phantomjs = subprocess.Popen(cmd)
-    except OSError:
-        logging.warning('phantomjs not found, continue running without it. and cmd is '+str(cmd))
-        return None
+    _phantomjs = {}
+    for port in ports:
+        cmd = [phantomjs_path,
+               # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
+               #'--load-images=false',
+               '--ssl-protocol=any',
+               '--disk-cache=true'] + list_arges + [phantomjs_fetcher, str(port)]
+        try:
+            _phantomjs[str(port)] = subprocess.Popen(cmd)
+        except OSError:
+            logging.warning('phantomjs not found, continue running without it. and cmd is '+str(cmd))
+            return None
 
     def quit(*args, **kwargs):
         _quit.append(1)
-        _phantomjs.kill()
-        _phantomjs.wait()
+        for key in _phantomjs.keys():
+            phantomjs[key].kill()
+            phantomjs[key].wait()
         logging.info('phantomjs exited.')
-
+    phantom_proxy = ''
     if not g.get('phantomjs_proxy'):
-        g['phantomjs_proxy'] = '127.0.0.1:%s' % port
+        for i in range(len(ports)):
+            if i==0:
+                phantom_proxy = ''+'127.0.0.1:%s' % ports[i]
+            phantom_proxy = phantom_proxy + ',127.0.0.1:%s' % ports[i]
+        g['phantomjs_proxy'] = phantom_proxy
 
-    phantomjs = utils.ObjectDict(port=port, quit=quit)
+    phantomjs = utils.ObjectDict(port=ports, quit=quit)
     g.instances.append(phantomjs)
     if g.get('testing_mode'):
         return phantomjs
 
     while True:
-        _phantomjs.wait()
-        if _quit or not auto_restart:
-            break
-        _phantomjs = subprocess.Popen(cmd)
+        for key in _phantomjs.keys():
+            _phantomjs[key].wait()
+            if _quit or not auto_restart:
+                break
+            #phantomjs = subprocess.Popen(cmd)
+            _phantomjs[key] = subprocess.Popen([phantomjs_path,
+               # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
+               #'--load-images=false',
+               '--ssl-protocol=any',
+               '--disk-cache=true'] + list_arges + [phantomjs_fetcher, key])
 
 
 @cli.command()

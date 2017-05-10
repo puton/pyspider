@@ -33,6 +33,8 @@ from tornado.simple_httpclient import SimpleAsyncHTTPClient
 from pyspider.libs import utils, dataurl, counter
 from pyspider.libs.url import quote_chinese
 from .cookie_utils import extract_cookies_to_jar
+
+import random
 logger = logging.getLogger('fetcher')
 
 
@@ -488,9 +490,11 @@ class Fetcher(object):
 
         # making requests
         fetch['headers'] = dict(fetch['headers'])
+        #print type(self.phantomjs_proxy)
+        phantomjs_proxy_list_ = self.phantomjs_proxy.split(',')
         try:
             request = tornado.httpclient.HTTPRequest(
-                url=self.phantomjs_proxy, method="POST",
+                url=phantomjs_proxy_list_[random.randint(0,len(phantomjs_proxy_list_)-1)], method="POST",
                 body=json.dumps(fetch), **request_conf)
         except Exception as e:
             raise gen.Return(handle_error(e))
