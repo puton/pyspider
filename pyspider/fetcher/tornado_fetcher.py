@@ -493,8 +493,10 @@ class Fetcher(object):
         #print type(self.phantomjs_proxy)
         phantomjs_proxy_list_ = self.phantomjs_proxy.split(',')
         try:
+            url = phantomjs_proxy_list_[random.randint(0,len(phantomjs_proxy_list_)-1)]
+            #print url
             request = tornado.httpclient.HTTPRequest(
-                url=phantomjs_proxy_list_[random.randint(0,len(phantomjs_proxy_list_)-1)], method="POST",
+                url=url, method="POST",
                 body=json.dumps(fetch), **request_conf)
         except Exception as e:
             raise gen.Return(handle_error(e))
