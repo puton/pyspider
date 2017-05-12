@@ -414,7 +414,7 @@ def phantomjs(ctx, phantomjs_path, ports, auto_restart, args):
     for port in ports:
         cmd = [phantomjs_path,
                # this may cause memory leak: https://github.com/ariya/phantomjs/issues/12903
-               #'--load-images=false',
+               '--load-images=false',
                '--ssl-protocol=any',
                '--disk-cache=true'] + list_arges + [phantomjs_fetcher, str(port)]
         try:

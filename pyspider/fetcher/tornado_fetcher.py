@@ -72,7 +72,7 @@ class Fetcher(object):
         'headers': {
         },
         'use_gzip': True,
-        'timeout': 120,
+        'timeout': 60,
         'connect_timeout': 20,
     }
     phantomjs_proxy = None
