@@ -14,7 +14,8 @@
 
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
-    <script src="../static/select_number.js"></script>
+    <script src="{{ url_for('static', filename='select_number.js') }}"></script>
+    <!--<script src="../static/select_number.js"></script>-->
 	<script>
 		function select_nun(){
 			var url = "/results/dump/{{ project }}.txt"
