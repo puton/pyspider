@@ -26,6 +26,25 @@ if PROFILE == 'dev':
     hdfs_dir = "/user/spider/cplatform/"
     hdfs_user = "hadoop"
 
+elif PROFILE == 'vm':
+    redis_nodes = [{'host':'192.168.136.130','port':7000},
+                    {'host':'192.168.136.130','port':7001},
+                    {'host':'192.168.136.130','port':7002},
+                    {'host':'192.168.136.131','port':7000},
+                    {'host':'192.168.136.131','port':7001},
+                    {'host':'192.168.136.131','port':7002},
+                    ]
+    redis_expires = 86400
+    landing = []
+    hbase_host = 'master.hadoop'
+    hbase_port = 9090
+    accessid = ''
+    accesskey = ''
+    es_host = ["master.hadoop"]
+    hdfs_web = "http://master.hadoop:50070"
+    hdfs_dir = "/user/spider/cplatform/"
+    hdfs_user = "hadoop"
+
 elif PROFILE == 'test':
     redis_nodes =  [{'host':'20.26.25.224','port':7000},
                     {'host':'20.26.25.224','port':7001},
