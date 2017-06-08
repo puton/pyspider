@@ -490,13 +490,13 @@ class Fetcher(object):
 
         # making requests
         fetch['headers'] = dict(fetch['headers'])
-        #print type(self.phantomjs_proxy)
-        phantomjs_proxy_list_ = self.phantomjs_proxy.split(',')
+        # print type(self.phantomjs_proxy)
+        # phantomjs_proxy_list_ = self.phantomjs_proxy.split(',')
         try:
-            url = phantomjs_proxy_list_[random.randint(0,len(phantomjs_proxy_list_)-1)]
+            # url = phantomjs_proxy_list_[random.randint(0,len(phantomjs_proxy_list_)-1)]
             #print url
             request = tornado.httpclient.HTTPRequest(
-                url=url, method="POST",
+                url=self.phantomjs_proxy, method="POST",
                 body=json.dumps(fetch), **request_conf)
         except Exception as e:
             raise gen.Return(handle_error(e))
