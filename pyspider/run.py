@@ -396,7 +396,12 @@ def phantomjs(ctx, phantomjs_path, ports, auto_restart, args):
     Run phantomjs fetcher if phantomjs is installed.
     """
     args = args or ctx.default_map and ctx.default_map.get('args', [])
-    ports = ports.split(',')
+    portsarea = ports.split(',')
+
+    ports=[]
+    for i in range(int(portsarea[0]),int(portsarea[1])+1):
+        ports.append(i)
+
     import subprocess
     g = ctx.obj
     _quit = []
