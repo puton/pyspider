@@ -12,7 +12,7 @@ import json
 import sqlalchemy.exc
 
 from sqlalchemy import (create_engine, MetaData, Table, Column, Index,
-                        Integer, String, Float, LargeBinary, func)
+                        Integer, String, Float, LargeBinary, func, Unicode)
 from sqlalchemy.engine.url import make_url
 from pyspider.libs import utils
 from pyspider.database.base.taskdb import TaskDB as BaseTaskDB
@@ -24,7 +24,7 @@ class TaskDB(SplitTableMixin, BaseTaskDB):
 
     def __init__(self, url):
         self.table = Table('__tablename__', MetaData(),
-                           Column('taskid', String(64), primary_key=True, nullable=False),
+                           Column('taskid', Unicode(Length=64,convert_unicode=True), primary_key=True, nullable=False),
                            Column('project', String(64)),
                            Column('url', String(1024)),
                            Column('status', Integer),
