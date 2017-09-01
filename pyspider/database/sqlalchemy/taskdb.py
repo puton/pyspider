@@ -34,7 +34,6 @@ class TaskDB(SplitTableMixin, BaseTaskDB):
                            Column('track', LargeBinary),
                            Column('lastcrawltime', Float(32)),
                            Column('updatetime', Float(32)),
-                           Column('foo', Unicode(length=32,convert_unicode=True)),
                            mysql_engine='InnoDB',
                            mysql_charset='utf8'
                            )
