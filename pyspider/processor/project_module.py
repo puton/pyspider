@@ -218,4 +218,7 @@ class ProjectLoader(object):
         script = self.project['script']
         if isinstance(script, six.text_type):
             return script.encode('utf8')
-        return script
+        try:
+            return script.decode('gbk').encode('utf8')
+        except:
+            return script
