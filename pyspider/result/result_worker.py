@@ -52,7 +52,7 @@ class ResultWorker(object):
             try:
                 task, result = self.inqueue.get(timeout=1)
                 try:
-                    result = json.dumps(result,encoding='utf-8',ensure_ascii=True)
+                    result = json.dumps(result,encoding='utf-8',ensure_ascii=False)
                 except Exception as e:
                     logger.exception(e)
                 self.on_result(task, result)
