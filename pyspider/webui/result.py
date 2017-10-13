@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 
 from flask import render_template, request, json
 from flask import Response
+from flask.ext import login
 from .app import app
 from pyspider.libs import result_dump
 
@@ -23,10 +24,12 @@ def result():
     count = resultdb.count(project)
     results = list(resultdb.select(project, offset=offset, limit=limit))
 
+    current_user = login.current_user.get_id()
+
     return render_template(
         "result.html", count=100 if count>100 else count, countall=count, results=results,
         result_formater=result_dump.result_formater,
-        project=project, offset=offset, limit=limit, json=json
+        project=project, offset=offset, limit=limit, json=json, current_user=current_user
     )
 
 

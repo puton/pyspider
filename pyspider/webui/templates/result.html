@@ -15,19 +15,97 @@
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='select_number.js') }}"></script>
+    <script>
+       var current_table_name='{{ project }}';
+    </script>
+    <script src="{{ url_for('static', filename='dacp.js') }}"></script>
     <!--<script src="../static/select_number.js"></script>-->
+    <!--<script src="../static/dacp.js"></script>-->
 	<script>
 		function select_nun(){
 			var url = "/results/dump/{{ project }}.txt"
 			$.MsgBox.Confirm("Attention", "Please select the number of downloads:",url, function () { alert("Download!"); });
 		} 
 	</script>
+      <style>
+          .msgbox-dacp{
+              display: none;
+              width: 200px;
+              height: 80px;
+              background: url({{ url_for('static', filename='img/msgbox.png') }}) no-repeat;
+              background-size:100% 100%;
+              position:absolute;
+              z-index: 50;
+              left:50px;
+              bottom: -90px;
+          }
+
+          .msgbox-dacp > p{
+              margin-top: 28px;
+              margin-left: 60px;
+              font-weight: bold;
+          }
+
+      </style>
   </head>
 
   <body>
+
+  <div class="modal fade" id="modal-publish-once" tabindex="-1" role="dialog" aria-labelledby="ModalLabel-publish-once" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel-publish-once">即时发布到DACP</h4>
+            </div>
+            <div class="modal-body">
+                即时发布到DACP中的<b>spider_hive_db.{{ current_user }}_{{ project }}</b>表中？
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn-publish-once">发布</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+
+  <div class="modal fade" id="modal-publish-cycle" tabindex="-1" role="dialog" aria-labelledby="ModalLabel-publish-cycle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="ModalLabel-publish-cycle">定时发布到DACP</h4>
+            </div>
+            <div class="modal-body">
+                即将上线，尽请期待！
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+
     <div class="top-bar">
       <h1>{{ project }} - Results&nbsp&nbsp&nbsp&nbsp&nbspTotal Num：{{countall}}</h1>
       <div class="btn-group">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+              <span class="glyphicon glyphicon-send"></span>
+              DACP
+              <span class="caret"></span>
+          </button>
+          <div class="msgbox-dacp">
+              <p>
+              任务创建成功！<br>
+              请在<a href="hivejobdetail">详情</a>查看~
+              </p>
+          </div>
+        <ul class="dropdown-menu">
+          <li><a data-toggle="modal" data-target="#modal-publish-once"><span class="glyphicon glyphicon-saved"></span>&nbsp&nbsp即时发布</a></li>
+          <li><a data-toggle="modal" data-target="#modal-publish-cycle"><span class="glyphicon glyphicon-time"></span>&nbsp&nbsp定时发布</a></li>
+          <li><a href="hivejobdetail"><span class="glyphicon glyphicon-list-alt"></span>&nbsp&nbsp发布详情</a></li>
+        </ul>
+
         <a href="/results/dump/{{ project }}.json"
           target="_blank" class="btn btn-default btn-sm">
           <span class="glyphicon glyphicon-download-alt"></span>
