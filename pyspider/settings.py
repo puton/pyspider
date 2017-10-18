@@ -16,7 +16,7 @@ if PROFILE == 'dev':
                     {'host':'192.168.136.131','port':7002},
                     ]
     redis_expires = 30
-    result_ensure_ascii = True
+    result_ensure_ascii = False
 
 elif PROFILE == 'vm':
     dacp_db = 'spdmgr/spdmgr_1Q#@oracle-datasource/pdb_spdmgr'
@@ -28,7 +28,7 @@ elif PROFILE == 'vm':
                     {'host':'192.168.136.131','port':7002},
                     ]
     redis_expires = 86400
-    result_ensure_ascii = True
+    result_ensure_ascii = False
 
 elif PROFILE == 'test':
     dacp_db = 'pyspd_admin/pyspd_admin_1Q#@pdb_bdprd'
@@ -40,7 +40,7 @@ elif PROFILE == 'test':
                     {'host':'20.26.25.225','port':7002},
                     ]
     redis_expires = 86400
-    result_ensure_ascii = False
+    result_ensure_ascii = True
 
 elif PROFILE == 'prod':
     dacp_db = 'spd_admin/spd_admin_1Q#@pdb_spider'
@@ -52,4 +52,4 @@ elif PROFILE == 'prod':
                     {'host':'10.78.155.72','port':16340},
                     ]
     redis_expires = 86400
-    result_ensure_ascii = False
+    result_ensure_ascii = True
