@@ -9,6 +9,9 @@ import time
 import json
 import logging
 from six.moves import queue as Queue
+
+from pyspider.settings import result_ensure_ascii
+
 logger = logging.getLogger("result")
 
 
@@ -52,7 +55,7 @@ class ResultWorker(object):
             try:
                 task, result = self.inqueue.get(timeout=1)
                 try:
-                    result = json.dumps(result,encoding='utf-8',ensure_ascii=False)
+                    result = json.dumps(result,encoding='utf-8',ensure_ascii=result_ensure_ascii)
                 except Exception as e:
                     logger.exception(e)
                 self.on_result(task, result)
