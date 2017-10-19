@@ -18,8 +18,43 @@ $(function () {
        userName=$(this).parent().parent().find('td:nth-child(3)').html();
        tableName=$(this).parent().parent().find('td:nth-child(4)').html();
        $('.modal-body-table').html(userName+"_"+tableName);
+       row=$(this).parent().parent();
+       jobId=row.attr('data-id');
+       $('.modal-body-record-count').html(row.attr('data-record-count')+' 条');
+       $('.modal-body-record-size').html(row.attr('data-record-size')+' Bytes');
+
+       getResultExample(jobId);
+
        $('#modal-publish-result').modal('show');
     });
+
+
+    function getResultExample(jobId) {
+        $('#tbody-result-example').children().remove();
+        $("#pre-result-example").text("");
+        var settings = {
+          "async": true,
+          "url": "getresultexample?job_id="+jobId,
+          "dataType": "json",
+          "method": "GET",
+          "headers": {
+            "content-type": "application/x-www-form-urlencoded",
+            "cache-control": "no-cache"
+          }
+        };
+        $.ajax(settings).done(function (response) {
+            var inHtml="";
+            for(var key in response){
+                inHtml+="<tr>" +
+                    "<td>"+key+"</td>" +
+                    "<td>"+response[key]+"</td>" +
+                    "</tr>";
+            }
+            $("#tbody-result-example").html(inHtml);
+            $("#pre-result-example").text(JSON.stringify(response));
+        });
+
+    }
 
     function abortHiveJob(jobId) {
         var settings = {
@@ -80,6 +115,8 @@ $(function () {
                 item=response[i];
                 node=$('tr[data-id="'+item['JOB_ID']+'"]');
                 // alert(node.find('td:nth-child(4)').find('.progress-bar').css('width'));
+                node.attr('data-record-count',item['RECORD_COUNT']);
+                node.attr('data-record-size',item['RECORD_SIZE']);
                 node.find('td:nth-child(1)').html(item['JOB_TYPE']);
                 node.find('td:nth-child(2)').html(item['JOB_DETAIL']);
                 node.find('td:nth-child(3)').html(item['USER_NAME']);
@@ -133,7 +170,7 @@ $(function () {
             for (var i = 0; i < response.length; i++) {
                 item=response[i];
 
-                tpl = '<tr data-id="'+item['JOB_ID']+'">\n' +
+                tpl = '<tr data-id="'+item['JOB_ID']+'" data-record-count="'+item['RECORD_COUNT']+'" data-record-size="'+item['RECORD_SIZE']+'">\n' +
         '                            <td>'+item['JOB_TYPE']+'</td>\n' +
         '                            <td></td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
@@ -151,7 +188,7 @@ $(function () {
         '                            <td>\n' +
         '                                <button type="button" class="btn btn-xs btn-default btn-view-job " '+item['VIEW_ACTIVE']+'>查看</button>\n' +
         '                                <button type="button" class="btn btn-xs btn-danger btn-abort-job " '+item['ABORT_ACTIVE']+'>终止</button>\n' +
-        '                                <button type="button" class="btn btn-xs btn-danger btn-delete-job " '+item['DELETE_ACTIVE']+'>删除</button>\n' +
+        '                                <button type="button" class="btn btn-xs btn-danger btn-delete-job " '+item['DELETE_ACTIVE']+'>清理</button>\n' +
         '                            </td>\n' +
         '                        </tr>';
 
