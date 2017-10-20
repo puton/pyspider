@@ -1,5 +1,7 @@
 $(function () {
 
+    loadingImg="<img src='static/img/loading.gif'/>";
+
     reloadHiveJobItemHtml();
 
     setInterval(refreshHiveJobItemHtml, 1000);
@@ -15,21 +17,19 @@ $(function () {
     });
 
     $('#tbody-hivejob').on('click','.btn-view-job',function () {
-       userName=$(this).parent().parent().find('td:nth-child(3)').html();
-       tableName=$(this).parent().parent().find('td:nth-child(4)').html();
-       $('.modal-body-table').html(userName+"_"+tableName);
        row=$(this).parent().parent();
-       jobId=row.attr('data-id');
-       $('.modal-body-record-count').html(row.attr('data-record-count')+' 条');
-       $('.modal-body-record-size').html(row.attr('data-record-size')+' Bytes');
-
-       getResultExample(jobId);
-
-       $('#modal-publish-result').modal('show');
+       renderResultModal(row);
     });
 
 
-    function getResultExample(jobId) {
+    function renderResultModal(row) {
+        jobId=row.attr('data-id');
+        userName=row.find('td:nth-child(3)').html();
+        tableName=row.find('td:nth-child(4)').html();
+        hiveTableName=userName+"_"+tableName;
+
+        $('.modal-body-table').html("");
+
         $('#tbody-result-example').children().remove();
         $("#pre-result-example").text("");
         var settings = {
@@ -52,6 +52,20 @@ $(function () {
             }
             $("#tbody-result-example").html(inHtml);
             $("#pre-result-example").text(JSON.stringify(response));
+
+
+            inHtmlSql="select \n";
+
+            for(var key in response){
+                inHtmlSql+="get_json_object(result,'$."+key+"'), \n";
+            }
+            inHtmlSql=inHtmlSql.slice(0,-3)+" \n";
+            inHtmlSql+= "from spider_hive_db."+hiveTableName+" a limit 10;";
+
+            $('.modal-body-table-name').html(hiveTableName);
+            $('.modal-body-table-sql').html(inHtmlSql);
+
+            $('#modal-publish-result').modal('show');
         });
 
     }
@@ -115,8 +129,6 @@ $(function () {
                 item=response[i];
                 node=$('tr[data-id="'+item['JOB_ID']+'"]');
                 // alert(node.find('td:nth-child(4)').find('.progress-bar').css('width'));
-                node.attr('data-record-count',item['RECORD_COUNT']);
-                node.attr('data-record-size',item['RECORD_SIZE']);
                 node.find('td:nth-child(1)').html(item['JOB_TYPE']);
                 node.find('td:nth-child(2)').html(item['JOB_DETAIL']);
                 node.find('td:nth-child(3)').html(item['USER_NAME']);
@@ -131,20 +143,22 @@ $(function () {
                     node.find('td:nth-child(5)').find('.progress-striped').addClass('active');
                 }
                 node.find('td:nth-child(6)').html(item['JOB_TIME']);
+                node.find('td:nth-child(7)').html((item['RECORD_COUNT']>0 ? item['RECORD_COUNT']:loadingImg));
+                node.find('td:nth-child(8)').html((item['RECORD_SIZE']>0 ? item['RECORD_SIZE']:loadingImg));
                 if(item['VIEW_ACTIVE']==''){
-                    node.find('td:nth-child(7)').find('button:nth-child(1)').removeAttr('disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(1)').removeAttr('disabled');
                 }else{
-                    node.find('td:nth-child(7)').find('button:nth-child(1)').attr('disabled','disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(1)').attr('disabled','disabled');
                 }
                 if(item['ABORT_ACTIVE']==''){
-                    node.find('td:nth-child(7)').find('button:nth-child(2)').removeAttr('disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(2)').removeAttr('disabled');
                 }else{
-                    node.find('td:nth-child(7)').find('button:nth-child(2)').attr('disabled','disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(2)').attr('disabled','disabled');
                 }
                 if(item['DELETE_ACTIVE']==''){
-                    node.find('td:nth-child(7)').find('button:nth-child(3)').removeAttr('disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(3)').removeAttr('disabled');
                 }else{
-                    node.find('td:nth-child(7)').find('button:nth-child(3)').attr('disabled','disabled');
+                    node.find('td:nth-child(9)').find('button:nth-child(3)').attr('disabled','disabled');
                 }
 
             }
@@ -170,7 +184,7 @@ $(function () {
             for (var i = 0; i < response.length; i++) {
                 item=response[i];
 
-                tpl = '<tr data-id="'+item['JOB_ID']+'" data-record-count="'+item['RECORD_COUNT']+'" data-record-size="'+item['RECORD_SIZE']+'">\n' +
+                tpl = '<tr data-id="'+item['JOB_ID']+'">\n' +
         '                            <td>'+item['JOB_TYPE']+'</td>\n' +
         '                            <td></td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
@@ -185,9 +199,11 @@ $(function () {
         '                                </div>\n' +
         '                            </td>\n' +
         '                            <td>'+item['JOB_TIME']+'</td>\n' +
+        '                            <td>'+(item['RECORD_COUNT']>0 ? item['RECORD_COUNT']:loadingImg)+'</td>\n' +
+        '                            <td>'+(item['RECORD_SIZE']>0 ? item['RECORD_SIZE']:loadingImg)+'</td>\n' +
         '                            <td>\n' +
         '                                <button type="button" class="btn btn-xs btn-default btn-view-job " '+item['VIEW_ACTIVE']+'>查看</button>\n' +
-        '                                <button type="button" class="btn btn-xs btn-danger btn-abort-job " '+item['ABORT_ACTIVE']+'>终止</button>\n' +
+        '                                <button type="button" class="btn btn-xs btn-danger btn-abort-job " style="display: none" '+item['ABORT_ACTIVE']+'>终止</button>\n' +
         '                                <button type="button" class="btn btn-xs btn-danger btn-delete-job " '+item['DELETE_ACTIVE']+'>清理</button>\n' +
         '                            </td>\n' +
         '                        </tr>';

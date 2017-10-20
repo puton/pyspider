@@ -33,68 +33,19 @@
 
                   <!-- Nav tabs -->
                   <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">概述</a></li>
-                    <li role="presentation"><a href="#statistics" aria-controls="statistics" role="tab" data-toggle="tab">统计</a></li>
-
-                  <li role="presentation" class="dropdown">
-                    <a href="#" id="structureTabDrop" class="dropdown-toggle" data-toggle="dropdown" aria-controls="structureTabDrop-contents" aria-expanded="false">结构 <span class="caret"></span></a>
-                    <ul class="dropdown-menu" aria-labelledby="structureTabDrop" id="structureTabDrop-contents">
-                      <li class=""><a href="#table-structure" role="tab" id="dropdown-tab-table" data-toggle="tab" aria-controls="table-structure">hive表结构</a></li>
-                      <li class=""><a href="#result-structure" role="tab" id="dropdown-tab-result" data-toggle="tab" aria-controls="result-structure">result字段结构</a></li>
-                    </ul>
-                  </li>
-
-
+                    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">查询示例</a></li>
+                    <li role="presentation"><a href="#result-structure" aria-controls="result-structure" role="tab" data-toggle="tab">result字段结构</a></li>
                   </ul>
 
                   <!-- Tab panes -->
                   <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active fade in" id="overview">
                         <p>Hive表名：</p>
-                        <p><code>spider_hive_db.<span class="modal-body-table"></span></code></p>
-                        <p>请在DACP中查看相关表，示例：</p>
-                        <p><pre>
-source login.sh
-beeline
-select * from spider_hive_db.<span class="modal-body-table"></span> limit 10;</pre></p>
+                        <p><code>spider_hive_db.<span class="modal-body-table-name"></span></code></p>
+                        <p>请在DACP中查看相关结果，示例：</p>
+                        <p><pre><span class="modal-body-table-sql"></span></pre></p>
 
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="table-structure">
-                        <p>Hive表名：</p>
-                        <p><code>spider_hive_db.<span class="modal-body-table"></span></code></p>
-                        <table class="table table-condensed">
-                          <thead>
-                            <tr>
-                              <th>字段名</th>
-                              <th>字段描述</th>
-                              <th>字段类型</th>
-                              <th>备注</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>URL</td>
-                              <td>原始链接</td>
-                              <td>String</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>UPDATETIME</td>
-                              <td>更新时间</td>
-                              <td>String</td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>RESULT</td>
-                              <td>爬取结果</td>
-                              <td>String</td>
-                              <td>json格式</td>
-                            </tr>
-                          </tbody>
-                        </table>
-
-                    </div>
-
                     <div role="tabpanel" class="tab-pane fade" id="result-structure">
                         <p>result字段结构：（json格式）</p>
 
@@ -113,12 +64,6 @@ select * from spider_hive_db.<span class="modal-body-table"></span> limit 10;</p
                         <p><pre id="pre-result-example"></pre></p>
 
 
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="statistics">
-                        <p>结果数量：</p>
-                        <p><code><span class="modal-body-record-count"></span></code></p>
-                        <p>结果大小：</p>
-                        <p><code><span class="modal-body-record-size"></span></code></p>
                     </div>
                   </div>
 
@@ -155,6 +100,8 @@ select * from spider_hive_db.<span class="modal-body-table"></span> limit 10;</p
                             <th>原始表名</th>
                             <th width="30%">任务状态</th>
                             <th>更新时间</th>
+                            <th>记录数</th>
+                            <th>大小（Bytes）</th>
                             <th>操作</th>
                             <!--<th>租户名</th>-->
                         </tr>
