@@ -7,8 +7,12 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ url_for('static', filename='hivejobdetail.js') }}"></script>
 
     <style>
@@ -16,6 +20,11 @@
             margin: 10px;
             margin-top: 20px;
         }
+
+        .form-control{
+            width: 80px;
+        }
+
     </style>
 </head>
 <body>
@@ -94,16 +103,51 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>任务类型</th>
-                            <th>任务描述</th>
+                            <th>类型</th>
+                            <th>描述</th>
                             <th>租户名</th>
                             <th>原始表名</th>
                             <th width="30%">任务状态</th>
                             <th>更新时间</th>
                             <th>记录数</th>
-                            <th>大小（Bytes）</th>
+                            <th>大小（B）</th>
                             <th>操作</th>
-                            <!--<th>租户名</th>-->
+                        </tr>
+                        <tr>
+                            <td>
+                                <select class="selectpicker" id="currentJobType" data-width="70px">
+                                  <option value="">所有</option>
+                                  <option value="once">即时</option>
+                                  <option value="cycle">周期</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td>
+                                <input type="text" class="form-control" id="currentUserName" placeholder="user">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="currentTableName" placeholder="table">
+                            </td>
+                            <td width="30%">
+                                <select class="selectpicker" id="currentStatus" data-width="100%">
+                                  <option value="">所有</option>
+                                  <option value="running">处理中</option>
+                                  <option value="done">完成</option>
+                                  <option value="error">失败</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="input-group date form_date" data-date="" data-date-format="dd MM yyyy" data-link-field="currentDate" data-link-format="yyyy-mm-dd">
+                                    <input class="form-control" size="16" type="text" value="" readonly>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <input type="hidden" id="currentDate" value="" /><br/>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <input class="btn btn-default" type="button" id="clearFilter" value="清空过滤">
+                            </td>
                         </tr>
                     </thead>
                     <tbody id="tbody-hivejob">

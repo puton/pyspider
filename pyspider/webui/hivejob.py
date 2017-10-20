@@ -22,11 +22,33 @@ from .app import app
 def listhivejob():
     current_user = login.current_user.get_id()
 
+    currentJobType = request.args.get('currentJobType')
+    currentTableName = request.args.get('currentTableName')
+    currentUserName = request.args.get('currentUserName')
+    currentStatus = request.args.get('currentStatus')
+    currentDate = request.args.get('currentDate')
+
     jobs=list()
     db_conn = cx_Oracle.connect(dacp_db)
     cursor = db_conn.cursor()
     sql = "SELECT * FROM DACP_JOB WHERE 1=1 "
-    sql += "AND USER_NAME = '"+current_user+"' "
+
+    if current_user != "admin":
+        sql += "AND USER_NAME = '"+current_user+"' "
+    if currentJobType != "":
+        sql += "AND JOB_TYPE = '" + str(currentJobType) + "' "
+    if currentTableName != "":
+        sql += "AND TABLE_NAME LIKE '%" + str(currentTableName) + "%' "
+    if currentUserName != "":
+        sql += "AND USER_NAME LIKE '%" + str(currentUserName) + "%' "
+    if currentStatus != "":
+        if currentStatus == "running":
+            sql += "AND STATUS IN ('waiting','oracle2local','local2hive','abort') "
+        else:
+            sql += "AND STATUS = '" + str(currentStatus) + "' "
+    if currentDate != "":
+        sql += "AND TO_CHAR(JOB_TIME, 'YYYY-MM-DD') = '"+currentDate+"'"
+
     sql += "ORDER BY JOB_TIME DESC "
     cursor.execute(sql)
     result = cursor.fetchall()

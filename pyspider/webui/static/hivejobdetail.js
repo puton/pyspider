@@ -1,10 +1,55 @@
 $(function () {
 
-    loadingImg="<img src='static/img/loading.gif'/>";
+    var loadingImg="<img src='static/img/loading.gif'/>";
 
-    reloadHiveJobItemHtml();
+    var currentTableName="";
+    var currentUserName="";
+    var currentJobType="";
+    var currentStatus="";
+    var currentDate="";
+    var currentParams;
 
-    setInterval(refreshHiveJobItemHtml, 1000);
+    init();
+
+    function init() {
+        reloadHiveJobItemHtml();
+        setInterval(refreshHiveJobItemHtml, 1000);
+        $('.form_date').datetimepicker({
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0
+        }).on('changeDate', function(ev){
+            reloadHiveJobItemHtml();
+        });
+    }
+
+    function updateFilterParams() {
+        currentJobType=$("#currentJobType").val();
+        currentTableName=$("#currentTableName").val();
+        currentUserName=$("#currentUserName").val();
+        currentStatus=$("#currentStatus").val();
+        currentDate=$("#currentDate").val();
+        currentParams = {
+             "currentJobType": currentJobType,
+             "currentTableName": currentTableName,
+             "currentUserName": currentUserName,
+             "currentStatus": currentStatus,
+             "currentDate": currentDate
+          }
+    }
+
+
+    $('.form-control').on('input',function () {
+        reloadHiveJobItemHtml();
+    });
+
+    $('.selectpicker').on('changed.bs.select',function () {
+        reloadHiveJobItemHtml();
+    });
 
     $('#tbody-hivejob').on('click','.btn-abort-job',function () {
        jobId=$(this).parent().parent().data('id');
@@ -21,6 +66,10 @@ $(function () {
        renderResultModal(row);
     });
 
+    $('#clearFilter').on('click',function () {
+       window.location.reload();
+    });
+
 
     function renderResultModal(row) {
         jobId=row.attr('data-id');
@@ -34,12 +83,15 @@ $(function () {
         $("#pre-result-example").text("");
         var settings = {
           "async": true,
-          "url": "getresultexample?job_id="+jobId,
+          "url": "getresultexample",
           "dataType": "json",
           "method": "GET",
           "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "cache-control": "no-cache"
+          },
+          "data": {
+             "job_id": jobId
           }
         };
         $.ajax(settings).done(function (response) {
@@ -113,6 +165,7 @@ $(function () {
     }
 
     function refreshHiveJobItemHtml() {
+        updateFilterParams();
         var settings = {
           "async": true,
           "url": "listhivejob",
@@ -121,7 +174,8 @@ $(function () {
           "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "cache-control": "no-cache"
-          }
+          },
+          "data": currentParams
         };
 
         $.ajax(settings).done(function (response) {
@@ -167,6 +221,7 @@ $(function () {
     }
 
     function reloadHiveJobItemHtml() {
+        updateFilterParams();
         var settings = {
           "async": true,
           "url": "listhivejob",
@@ -175,7 +230,8 @@ $(function () {
           "headers": {
             "content-type": "application/x-www-form-urlencoded",
             "cache-control": "no-cache"
-          }
+          },
+          "data": currentParams
         };
 
         $.ajax(settings).done(function (response) {
