@@ -47,8 +47,9 @@ def listhivejob():
         else:
             sql += "AND STATUS = '" + str(currentStatus) + "' "
     if currentDate != "":
-        sql += "AND TO_CHAR(JOB_TIME, 'YYYY-MM-DD') = '"+currentDate+"'"
+        sql += "AND TO_CHAR(JOB_TIME, 'YYYY-MM-DD') = '"+currentDate+"' "
 
+    sql += " AND (STATUS != 'delete' OR ( STATUS = 'delete' AND (SYSDATE-JOB_TIME)<1 ) ) "
     sql += "ORDER BY JOB_TIME DESC "
     cursor.execute(sql)
     result = cursor.fetchall()

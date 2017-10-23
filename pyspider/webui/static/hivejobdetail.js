@@ -70,6 +70,19 @@ $(function () {
        window.location.reload();
     });
 
+    function comdify(n){
+    　　var re=/\d{1,3}(?=(\d{3})+$)/g;
+    　　var n1=n.replace(/^(\d+)((\.\d+)?)$/,function(s,s1,s2){return s1.replace(re,"$&,")+s2;});
+    　　return n1;
+    }
+
+    function bytesToSize(bytes) {
+        if (bytes === 0) return '0 B';
+        var k = 1024, // or 1024
+            sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+    }
 
     function renderResultModal(row) {
         jobId=row.attr('data-id');
@@ -197,8 +210,8 @@ $(function () {
                     node.find('td:nth-child(5)').find('.progress-striped').addClass('active');
                 }
                 node.find('td:nth-child(6)').html(item['JOB_TIME']);
-                node.find('td:nth-child(7)').html((item['RECORD_COUNT']>0 ? item['RECORD_COUNT']:loadingImg));
-                node.find('td:nth-child(8)').html((item['RECORD_SIZE']>0 ? item['RECORD_SIZE']:loadingImg));
+                node.find('td:nth-child(7)').html((item['RECORD_COUNT']>0 ? comdify(item['RECORD_COUNT']):loadingImg));
+                node.find('td:nth-child(8)').html((item['RECORD_SIZE']>0 ? bytesToSize(item['RECORD_SIZE']):loadingImg));
                 if(item['VIEW_ACTIVE']==''){
                     node.find('td:nth-child(9)').find('button:nth-child(1)').removeAttr('disabled');
                 }else{
@@ -255,8 +268,8 @@ $(function () {
         '                                </div>\n' +
         '                            </td>\n' +
         '                            <td>'+item['JOB_TIME']+'</td>\n' +
-        '                            <td>'+(item['RECORD_COUNT']>0 ? item['RECORD_COUNT']:loadingImg)+'</td>\n' +
-        '                            <td>'+(item['RECORD_SIZE']>0 ? item['RECORD_SIZE']:loadingImg)+'</td>\n' +
+        '                            <td>'+(item['RECORD_COUNT']>0 ? comdify(item['RECORD_COUNT']):loadingImg)+'</td>\n' +
+        '                            <td>'+(item['RECORD_SIZE']>0 ? bytesToSize(item['RECORD_SIZE']):loadingImg)+'</td>\n' +
         '                            <td>\n' +
         '                                <button type="button" class="btn btn-xs btn-default btn-view-job " '+item['VIEW_ACTIVE']+'>查看</button>\n' +
         '                                <button type="button" class="btn btn-xs btn-danger btn-abort-job " style="display: none" '+item['ABORT_ACTIVE']+'>终止</button>\n' +
