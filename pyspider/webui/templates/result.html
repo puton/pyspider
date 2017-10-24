@@ -11,9 +11,10 @@
     <meta name="author" content="binux">
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='result.min.css') }}" rel="stylesheet">
-
+    <link href="{{ url_for('static', filename='bootstrap-select.min.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-select.min.js') }}"></script>
     <script src="{{ url_for('static', filename='select_number.js') }}"></script>
     <script>
        var current_table_name='{{ project }}';
@@ -56,10 +57,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="ModalLabel-publish-once">即时发布到DACP</h4>
+                <h4 class="modal-title" id="ModalLabel-publish-once">实时发布到DACP</h4>
             </div>
             <div class="modal-body">
-                即时发布到DACP中的<b>spider_hive_db.{{ current_user }}_{{ project }}</b>表中？
+                <div class="row" style="text-align: center">
+                    实时发布到<b>spider_hive_db.{{ current_user }}_{{ project }}</b>表中？
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -77,10 +80,103 @@
                 <h4 class="modal-title" id="ModalLabel-publish-cycle">定时发布到DACP</h4>
             </div>
             <div class="modal-body">
-                即将上线，尽请期待！
+                <div class="row" style="text-align: center">
+                    <span>每</span>
+                    <span>
+                        <select class="selectpicker" id="frequency" data-width="70px">
+                            <option value="day">日</option>
+                            <option value="week">周</option>
+                            <option value="month">月</option>
+                        </select>
+                    </span>
+                    <span class="monthArea" style="display: none;">
+                        <select class="selectpicker" id="monthStr" data-width="70px">
+                            <option value="--">--</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29" disabled>29</option>
+                            <option value="30" disabled>30</option>
+                            <option value="31" disabled>31</option>
+                        </select>
+                    </span>
+                    <span class="monthArea" style="display: none;">号</span>
+                    <span class="weekArea" style="display: none;">
+                        <select class="selectpicker" id="weekStr" data-width="70px">
+                            <option value="--">--</option>
+                            <option value="00">一</option>
+                            <option value="01">二</option>
+                            <option value="02">三</option>
+                            <option value="03">四</option>
+                            <option value="04">五</option>
+                            <option value="05">六</option>
+                            <option value="06">日</option>
+                        </select>
+                    </span>
+                    <span>
+                        <select class="selectpicker" id="hourStr" data-width="70px">
+                            <option value="00">00</option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                    </span>
+                    <span>点</span>
+                </div>
+                <div class="row" style="text-align: center;margin-top: 20px">
+                    <span>
+                        发布到<b>spider_hive_db.{{ current_user }}_{{ project }}</b>表中？
+                    </span>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">我知道了</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn-publish-cycle">发布</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -101,7 +197,7 @@
               </p>
           </div>
         <ul class="dropdown-menu">
-          <li><a data-toggle="modal" data-target="#modal-publish-once"><span class="glyphicon glyphicon-saved"></span>&nbsp&nbsp即时发布</a></li>
+          <li><a data-toggle="modal" data-target="#modal-publish-once"><span class="glyphicon glyphicon-saved"></span>&nbsp&nbsp实时发布</a></li>
           <li><a data-toggle="modal" data-target="#modal-publish-cycle"><span class="glyphicon glyphicon-time"></span>&nbsp&nbsp定时发布</a></li>
           <li><a href="hivejobdetail"><span class="glyphicon glyphicon-list-alt"></span>&nbsp&nbsp发布详情</a></li>
         </ul>

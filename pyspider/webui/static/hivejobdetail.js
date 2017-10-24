@@ -84,6 +84,50 @@ $(function () {
         return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
     }
 
+    function genJobDetail(jobDetailStr) {
+        if(jobDetailStr!=null && jobDetailStr!=""){
+            jobDetail=JSON.parse(jobDetailStr);
+            monthStr=jobDetail.rule.substring(0,2);
+            weekStrNum=jobDetail.rule.substring(2,4);
+            switch (weekStrNum){
+                case "00":
+                    weekStr="一";
+                    break;
+                case "01":
+                    weekStr="二";
+                    break;
+                case "02":
+                    weekStr="三";
+                    break;
+                case "03":
+                    weekStr="四";
+                    break;
+                case "04":
+                    weekStr="五";
+                    break;
+                case "05":
+                    weekStr="六";
+                    break;
+                case "06":
+                    weekStr="日";
+                    break;
+                default :
+                    weekStr="--";
+                    break;
+            }
+            hourStr=jobDetail.rule.substring(4,6);
+            if(jobDetail.frequency=="day"){
+                return "每日"+hourStr+"点";
+            }else if(jobDetail.frequency=="week"){
+                return "每周"+weekStr+hourStr+"点";
+            }else if(jobDetail.frequency=="month"){
+                return "每月"+monthStr+"号"+hourStr+"点";
+            }
+        }else{
+            return "";
+        }
+    }
+
     function renderResultModal(row) {
         jobId=row.attr('data-id');
         userName=row.find('td:nth-child(3)').html();
@@ -197,7 +241,7 @@ $(function () {
                 node=$('tr[data-id="'+item['JOB_ID']+'"]');
                 // alert(node.find('td:nth-child(4)').find('.progress-bar').css('width'));
                 node.find('td:nth-child(1)').html(item['JOB_TYPE']);
-                node.find('td:nth-child(2)').html(item['JOB_DETAIL']);
+                node.find('td:nth-child(2)').html(genJobDetail(item['JOB_DETAIL']));
                 node.find('td:nth-child(3)').html(item['USER_NAME']);
                 node.find('td:nth-child(4)').html(item['TABLE_NAME']);
                 node.find('td:nth-child(5)').find('.progress-bar').css('width',item['RATE']+"%");
@@ -255,10 +299,10 @@ $(function () {
 
                 tpl = '<tr data-id="'+item['JOB_ID']+'">\n' +
         '                            <td>'+item['JOB_TYPE']+'</td>\n' +
-        '                            <td></td>\n' +
+        '                            <td>'+genJobDetail(item['JOB_DETAIL'])+'</td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
         '                            <td>'+item['TABLE_NAME']+'</td>\n' +
-        '                            <td width="30%">\n' +
+        '                            <td width="20%">\n' +
         '                                <div class="progress progress-striped '+item['PROGRESS_ACTIVE']+'">\n' +
         '                                    <div class="progress-bar progress-bar-'+item['COLOR']+'" role="progressbar"\n' +
         '                                         aria-valuenow="'+item['RATE']+'" aria-valuemin="0" aria-valuemax="100"\n' +

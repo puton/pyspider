@@ -118,6 +118,7 @@ def listhivejob():
 def addhivejob():
     current_user = login.current_user.get_id()
     job_type = request.values.get('job_type')
+    job_detail = request.values.get('job_detail')
     table_name = request.values.get('table_name')
 
     db_conn = cx_Oracle.connect(dacp_db)
@@ -140,7 +141,7 @@ def addhivejob():
           "VALUES(" \
           "'"+job_id+"'," \
           "'"+job_type+"'," \
-          "''," \
+          "'"+job_detail+"'," \
           "'"+current_user+"'," \
           "'"+table_name+"'," \
           "'waiting'," \
