@@ -7,7 +7,7 @@ except Exception,e:
     PROFILE = 'prod'
 
 if PROFILE == 'dev':
-    dacp_db = 'spdmgr/spdmgr_1Q#@oracle-datasource/pdb_spdmgr'
+    hive_db = 'spdmgr/spdmgr_1Q#@oracle-datasource/pdb_spdmgr'
     redis_nodes =  [{'host':'192.168.136.130','port':7000},
                     {'host':'192.168.136.130','port':7001},
                     {'host':'192.168.136.130','port':7002},
@@ -19,7 +19,7 @@ if PROFILE == 'dev':
     result_ensure_ascii = True
 
 elif PROFILE == 'vm':
-    dacp_db = 'spdmgr/spdmgr_1Q#@oracle-datasource/pdb_spdmgr'
+    hive_db = 'spdmgr/spdmgr_1Q#@oracle-datasource/pdb_spdmgr'
     redis_nodes = [{'host':'192.168.136.130','port':7000},
                     {'host':'192.168.136.130','port':7001},
                     {'host':'192.168.136.130','port':7002},
@@ -31,7 +31,7 @@ elif PROFILE == 'vm':
     result_ensure_ascii = True
 
 elif PROFILE == 'test':
-    dacp_db = 'pyspd_admin/pyspd_admin_1Q#@pdb_bdprd'
+    hive_db = 'pyspd_admin/pyspd_admin_1Q#@pdb_bdprd'
     redis_nodes =  [{'host':'20.26.25.224','port':7000},
                     {'host':'20.26.25.224','port':7001},
                     {'host':'20.26.25.224','port':7002},
@@ -43,7 +43,7 @@ elif PROFILE == 'test':
     result_ensure_ascii = False
 
 elif PROFILE == 'prod':
-    dacp_db = 'spd_admin/spd_admin_1Q#@pdb_spider'
+    hive_db = 'spd_admin/spd_admin_1Q#@pdb_spider'
     redis_nodes =  [{'host':'10.78.155.61','port':16340},
                     {'host':'10.78.155.67','port':16340},
                     {'host':'10.78.155.68','port':16340},

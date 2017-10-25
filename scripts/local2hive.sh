@@ -23,6 +23,6 @@ beeline -e "${sql_ddl}"
 
 echo "[success] hive table created : ${HIVE_TABLE_NAME}"
 
-hadoop fs -put /data/dacp/${HIVE_TABLE_NAME} /jc_spider/spider_hive_db/${HIVE_TABLE_NAME}/
+hadoop fs -put /data/hive/${HIVE_TABLE_NAME} /jc_spider/spider_hive_db/${HIVE_TABLE_NAME}/
 
 echo "[success] hive file imported : ${HIVE_TABLE_NAME}"

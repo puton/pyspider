@@ -14,7 +14,7 @@ import time
 from flask import render_template, request
 from flask.ext import login
 
-from pyspider.settings import dacp_db
+from pyspider.settings import hive_db
 from .app import app
 
 
@@ -29,9 +29,9 @@ def listhivejob():
     currentDate = request.args.get('currentDate')
 
     jobs=list()
-    db_conn = cx_Oracle.connect(dacp_db)
+    db_conn = cx_Oracle.connect(hive_db)
     cursor = db_conn.cursor()
-    sql = "SELECT * FROM DACP_JOB WHERE 1=1 "
+    sql = "SELECT * FROM HIVE_JOB WHERE 1=1 "
 
     if current_user != "admin":
         sql += "AND USER_NAME = '"+current_user+"' "
@@ -121,12 +121,12 @@ def addhivejob():
     job_detail = request.values.get('job_detail')
     table_name = request.values.get('table_name')
 
-    db_conn = cx_Oracle.connect(dacp_db)
+    db_conn = cx_Oracle.connect(hive_db)
 
     job_id = 'JOB'+str(int(round(time.time() * 1000)))
 
     cursor = db_conn.cursor()
-    sql = "INSERT INTO DACP_JOB(" \
+    sql = "INSERT INTO HIVE_JOB(" \
           "JOB_ID," \
           "JOB_TYPE," \
           "JOB_DETAIL," \
@@ -161,9 +161,9 @@ def addhivejob():
 @app.route('/aborthivejob', methods=['POST'])
 def aborthivejob():
     job_id = request.values.get('job_id')
-    db_conn = cx_Oracle.connect(dacp_db)
+    db_conn = cx_Oracle.connect(hive_db)
     cursor = db_conn.cursor()
-    sql = "UPDATE DACP_JOB SET " \
+    sql = "UPDATE HIVE_JOB SET " \
           "STATUS='abort' " \
           ",RATE='100' " \
           ",REMARK='主动放弃' " \
@@ -181,9 +181,9 @@ def aborthivejob():
 @app.route('/deletehivejob', methods=['POST'])
 def deletehivejob():
     job_id = request.values.get('job_id')
-    db_conn = cx_Oracle.connect(dacp_db)
+    db_conn = cx_Oracle.connect(hive_db)
     cursor = db_conn.cursor()
-    sql = "UPDATE DACP_JOB SET " \
+    sql = "UPDATE HIVE_JOB SET " \
           "STATUS='abort' " \
           ",RATE='100' " \
           ",REMARK='正在清理' " \
@@ -201,9 +201,9 @@ def deletehivejob():
 @app.route('/getresultexample')
 def getresultexample():
     job_id = request.args.get('job_id')
-    db_conn = cx_Oracle.connect(dacp_db)
+    db_conn = cx_Oracle.connect(hive_db)
     cursor = db_conn.cursor()
-    sql="SELECT RECORD_EXAMPLE FROM DACP_JOB WHERE JOB_ID='"+job_id+"'"
+    sql="SELECT RECORD_EXAMPLE FROM HIVE_JOB WHERE JOB_ID='"+job_id+"'"
     cursor.execute(sql)
     record = cursor.fetchone()
     try:

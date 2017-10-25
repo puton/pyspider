@@ -42,8 +42,8 @@ $(function () {
         $.ajax(settings).done(function (response) {
             if(response.status=='ok'){
                 $('#modal-publish-once').modal('hide');
-                $('.msgbox-dacp').fadeIn(3000);
-                $('.msgbox-dacp').fadeOut(5000);
+                $('.msgbox-hive').fadeIn(3000);
+                $('.msgbox-hive').fadeOut(5000);
             }
         });
     });
@@ -72,8 +72,8 @@ $(function () {
         $.ajax(settings).done(function (response) {
             if(response.status=='ok'){
                 $('#modal-publish-cycle').modal('hide');
-                $('.msgbox-dacp').fadeIn(3000);
-                $('.msgbox-dacp').fadeOut(5000);
+                $('.msgbox-hive').fadeIn(3000);
+                $('.msgbox-hive').fadeOut(5000);
             }
         });
     });
