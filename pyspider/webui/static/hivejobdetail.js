@@ -7,6 +7,7 @@ $(function () {
     var currentJobType="";
     var currentStatus="";
     var currentDate="";
+    var currentSort="";
     var currentParams;
 
     init();
@@ -33,12 +34,14 @@ $(function () {
         currentUserName=$("#currentUserName").val();
         currentStatus=$("#currentStatus").val();
         currentDate=$("#currentDate").val();
+        currentSort=$("#currentSort").val();
         currentParams = {
              "currentJobType": currentJobType,
              "currentTableName": currentTableName,
              "currentUserName": currentUserName,
              "currentStatus": currentStatus,
-             "currentDate": currentDate
+             "currentDate": currentDate,
+             "currentSort": currentSort
           }
     }
 
@@ -66,9 +69,17 @@ $(function () {
        renderResultModal(row);
     });
 
+    $('.btn-sort').on('click',function () {
+        $('.btn-sort').removeClass('active');
+        $(this).addClass('active');
+        $('#currentSort').val($(this).val());
+        reloadHiveJobItemHtml();
+    });
+
     $('#clearFilter').on('click',function () {
        window.location.reload();
     });
+
 
     function comdify(n){
     　　var re=/\d{1,3}(?=(\d{3})+$)/g;
@@ -81,7 +92,7 @@ $(function () {
         var k = 1024, // or 1024
             sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             i = Math.floor(Math.log(bytes) / Math.log(k));
-        return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+        return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
     }
 
     function genJobDetail(jobDetailStr) {

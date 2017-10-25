@@ -27,7 +27,7 @@ def listhivejob():
     currentUserName = request.args.get('currentUserName')
     currentStatus = request.args.get('currentStatus')
     currentDate = request.args.get('currentDate')
-
+    currentSort = request.args.get('currentSort')
     jobs=list()
     db_conn = cx_Oracle.connect(hive_db)
     cursor = db_conn.cursor()
@@ -50,7 +50,12 @@ def listhivejob():
         sql += "AND TO_CHAR(JOB_TIME, 'YYYY-MM-DD') = '"+currentDate+"' "
 
     sql += " AND (STATUS != 'delete' OR ( STATUS = 'delete' AND (SYSDATE-JOB_TIME)<1 ) ) "
-    sql += "ORDER BY JOB_TIME DESC "
+    sql += "ORDER BY "
+    if currentSort != "":
+        sql += str(currentSort)
+    else:
+        sql += "JOB_TIME DESC "
+
     cursor.execute(sql)
     result = cursor.fetchall()
     for row in result:

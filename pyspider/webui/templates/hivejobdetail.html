@@ -143,10 +143,17 @@
                                 </div>
                                 <input type="hidden" id="currentDate" value="" /><br/>
                             </td>
-                            <td></td>
-                            <td></td>
                             <td>
-                                <input class="btn btn-default" type="button" id="clearFilter" value="重置条件">
+                                <button class="btn btn-default btn-sort" type="button" value="TO_NUMBER(RECORD_COUNT) ASC"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                                <button class="btn btn-default btn-sort" type="button" value="TO_NUMBER(RECORD_COUNT) DESC"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                            </td>
+                            <td>
+                                <button class="btn btn-default btn-sort" type="button" value="TO_NUMBER(RECORD_SIZE) ASC"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                                <button class="btn btn-default btn-sort" type="button" value="TO_NUMBER(RECORD_SIZE) DESC"><span class="glyphicon glyphicon-arrow-down"></span></button>
+                            </td>
+                            <input type="hidden" id="currentSort" value="">
+                            <td>
+                                <button class="btn btn-default" type="button" id="clearFilter">重置条件</button>
                             </td>
                         </tr>
                     </thead>
