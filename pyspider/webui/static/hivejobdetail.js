@@ -116,6 +116,16 @@ $(function () {
         return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
     }
 
+    function getJobType(jobType) {
+        if(jobType=='once'){
+            return '即时';
+        }else if(jobType=='cycle'){
+            return '周期';
+        }else {
+            return '其他';
+        }
+    }
+
     function genJobDetail(jobDetailStr) {
         if(jobDetailStr!=null && jobDetailStr!=""){
             jobDetail=JSON.parse(jobDetailStr);
@@ -272,7 +282,7 @@ $(function () {
                 item=response[i];
                 node=$('tr[data-id="'+item['JOB_ID']+'"]');
                 // alert(node.find('td:nth-child(4)').find('.progress-bar').css('width'));
-                node.find('td:nth-child(1)').html(item['JOB_TYPE']);
+                node.find('td:nth-child(1)').html(getJobType(item['JOB_TYPE']));
                 node.find('td:nth-child(2)').html(genJobDetail(item['JOB_DETAIL']));
                 node.find('td:nth-child(3)').html(item['USER_NAME']);
                 node.find('td:nth-child(4)').html(item['TABLE_NAME']);
@@ -330,7 +340,7 @@ $(function () {
                 item=response[i];
 
                 tpl = '<tr data-id="'+item['JOB_ID']+'">\n' +
-        '                            <td>'+item['JOB_TYPE']+'</td>\n' +
+        '                            <td>'+getJobType(item['JOB_TYPE'])+'</td>\n' +
         '                            <td>'+genJobDetail(item['JOB_DETAIL'])+'</td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
         '                            <td>'+item['TABLE_NAME']+'</td>\n' +
