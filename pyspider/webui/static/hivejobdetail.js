@@ -341,7 +341,7 @@ $(function () {
 
                 tpl = '<tr data-id="'+item['JOB_ID']+'">\n' +
         '                            <td>'+getJobType(item['JOB_TYPE'])+'</td>\n' +
-        '                            <td>'+genJobDetail(item['JOB_DETAIL'])+'</td>\n' +
+        '                            <td width="110px">'+genJobDetail(item['JOB_DETAIL'])+'</td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
         '                            <td>'+item['TABLE_NAME']+'</td>\n' +
         '                            <td width="20%">\n' +
@@ -354,8 +354,8 @@ $(function () {
         '                                </div>\n' +
         '                            </td>\n' +
         '                            <td>'+item['JOB_TIME']+'</td>\n' +
-        '                            <td>'+(item['RECORD_COUNT']>0 ? comdify(item['RECORD_COUNT']):loadingImg)+'</td>\n' +
-        '                            <td>'+(item['RECORD_SIZE']>0 ? bytesToSize(item['RECORD_SIZE']):loadingImg)+'</td>\n' +
+        '                            <td width="100px">'+(item['RECORD_COUNT']>0 ? comdify(item['RECORD_COUNT']):loadingImg)+'</td>\n' +
+        '                            <td width="100px">'+(item['RECORD_SIZE']>0 ? bytesToSize(item['RECORD_SIZE']):loadingImg)+'</td>\n' +
         '                            <td>\n' +
         '                                <button type="button" class="btn btn-xs btn-default btn-view-job " '+item['VIEW_ACTIVE']+'>查看</button>\n' +
         '                                <button type="button" class="btn btn-xs btn-danger btn-abort-job " style="display: none" '+item['ABORT_ACTIVE']+'>终止</button>\n' +
