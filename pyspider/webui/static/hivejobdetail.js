@@ -344,7 +344,7 @@ $(function () {
         '                            <td width="110px">'+genJobDetail(item['JOB_DETAIL'])+'</td>\n' +
         '                            <td >'+item['USER_NAME']+'</td>\n' +
         '                            <td>'+item['TABLE_NAME']+'</td>\n' +
-        '                            <td width="20%">\n' +
+        '                            <td width="15%">\n' +
         '                                <div class="progress progress-striped '+item['PROGRESS_ACTIVE']+'">\n' +
         '                                    <div class="progress-bar progress-bar-'+item['COLOR']+'" role="progressbar"\n' +
         '                                         aria-valuenow="'+item['RATE']+'" aria-valuemin="0" aria-valuemax="100"\n' +
@@ -353,7 +353,7 @@ $(function () {
         '                                    </div>\n' +
         '                                </div>\n' +
         '                            </td>\n' +
-        '                            <td>'+item['JOB_TIME']+'</td>\n' +
+        '                            <td width="160px">'+item['JOB_TIME']+'</td>\n' +
         '                            <td width="100px">'+(item['RECORD_COUNT']>0 ? comdify(item['RECORD_COUNT']):loadingImg)+'</td>\n' +
         '                            <td width="100px">'+(item['RECORD_SIZE']>0 ? bytesToSize(item['RECORD_SIZE']):loadingImg)+'</td>\n' +
         '                            <td>\n' +
